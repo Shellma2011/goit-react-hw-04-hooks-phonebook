@@ -24,31 +24,22 @@ export default function App() {
   );
   const [filter, setFilter] = useState('');
 
-  // useEffect(() => {
-  //   setContacts(JSON.parse(localStorage.getItem('contacts')));
-  // }, []);
-
-  useEffect(() => {
-    setContacts(localStorage.setItem('contacts', JSON.stringify(contacts)));
-  }, [contacts]);
-
   const addContact = ({ name, number }) => {
-    let newContact = {
+    const newContact = {
       id: shortid.generate(),
       name,
       number,
     };
-
     if (
       contacts.find(
-        prevState =>
-          prevState.name.toLocaleLowerCase() === name.toLocaleLowerCase() ||
-          prevState.number === number,
+        contact =>
+          contact.name.toLocaleLowerCase() === newContact.name.toLocaleLowerCase() ||
+          contact.number === newContact.number,
       )
     ) {
-      return toast.success(`${name} is already in contacts!`);
+      return toast.success(`${newContact.name} is already in contacts!`);
     } else {
-      setContacts(contacts => [newContact, ...contacts]);
+      return setContacts(contacts => [newContact, ...contacts]);
     }
   };
 
@@ -61,14 +52,13 @@ export default function App() {
   };
 
   const getVisibleContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
-    const visibleContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter),
-    );
-    return visibleContacts;
+    const normalizeFilter = filter.toLocaleLowerCase();
+    return contacts.filter(contact => contact.name.toLowerCase().includes(normalizeFilter));
   };
 
-  const visibleContacts = getVisibleContacts();
+  useEffect(() => {
+    setContacts(localStorage.setItem('contacts', JSON.stringify(contacts)));
+  }, [contacts]);
 
   return (
     <div>
@@ -77,7 +67,7 @@ export default function App() {
         <ContactForm onSubmit={addContact} />
         <Container title="Contacts">
           <Filter value={filter} onChange={changeFilter} />
-          <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
+          <ContactList contacts={getVisibleContacts()} onDeleteContact={deleteContact} />
         </Container>
       </Section>
     </div>
