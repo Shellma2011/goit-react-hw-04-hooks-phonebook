@@ -19,12 +19,14 @@ import Container from './components/Container';
 // };
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(() =>
+    JSON.parse(localStorage.getItem('contacts') ?? []),
+  );
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    setContacts(JSON.parse(localStorage.getItem('contacts')));
-  }, []);
+  // useEffect(() => {
+  //   setContacts(JSON.parse(localStorage.getItem('contacts')));
+  // }, []);
 
   useEffect(() => {
     setContacts(localStorage.setItem('contacts', JSON.stringify(contacts)));
@@ -59,12 +61,14 @@ export default function App() {
   };
 
   const getVisibleContacts = () => {
-    // const { filter, contacts } = this.state;
-
     const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
+    const visibleContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+    return visibleContacts;
   };
+
+  const visibleContacts = getVisibleContacts();
 
   return (
     <div>
@@ -73,7 +77,7 @@ export default function App() {
         <ContactForm onSubmit={addContact} />
         <Container title="Contacts">
           <Filter value={filter} onChange={changeFilter} />
-          <ContactList contacts={getVisibleContacts()} onDeleteContact={deleteContact} />
+          <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
         </Container>
       </Section>
     </div>
