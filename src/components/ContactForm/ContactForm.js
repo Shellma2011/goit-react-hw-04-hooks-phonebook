@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import styled from 'styled-components';
 import shortid from 'shortid';
@@ -89,14 +89,9 @@ export default function ContactForm({ onSubmit }) {
     e.preventDefault();
 
     onSubmit(name, number);
-    // reset();
     setName('');
     setNumber('');
   };
-
-  // const reset = () => {
-  //   this.setState({ name: '', number: '' });
-  // };
 
   return (
     <PhonebookForm onSubmit={handleOnSubmit}>
@@ -131,6 +126,6 @@ export default function ContactForm({ onSubmit }) {
   );
 }
 
-// ContactForm.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

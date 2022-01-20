@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -72,7 +72,7 @@ export default function ContactList({ contacts, onDeleteContact }) {
           <ContactInfoStyled>{contact.name + ':'}</ContactInfoStyled>
           <ContactInfoStyled>{contact.number}</ContactInfoStyled>
           <ContactButton type="button" onClick={() => onDeleteContact(contact.id)}>
-            Удалить
+            Delete
           </ContactButton>
         </ContactItemStyled>
       ))}
@@ -80,13 +80,13 @@ export default function ContactList({ contacts, onDeleteContact }) {
   );
 }
 
-// ContactList.propTypes = {
-//   items: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       number: PropTypes.string.isRequired,
-//     }),
-//   ),
-//   onDeleteContact: PropTypes.func.isRequired,
-// };
+ContactList.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }),
+  ),
+  onDeleteContact: PropTypes.func.isRequired,
+};
